@@ -90,3 +90,20 @@ src/app/
 - Functional guards and interceptors
 - Signal-based reactivity
 - Type-safe development
+
+---
+
+## Screenshots
+
+### Login page
+
+![alt text](image.png)
+
+### Dashboard Page
+
+![alt text](image-1.png)
+
+### Item list page
+
+![alt text](image-2.png)
+
