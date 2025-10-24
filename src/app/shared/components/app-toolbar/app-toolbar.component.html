@@ -1,0 +1,19 @@
+<mat-toolbar color="primary" class="app-toolbar">
+  <div class="title-section">
+    @if (pageIcon) {
+        <mat-icon class="page-icon">{{ pageIcon }}</mat-icon>
+    }
+    <span class="page-title">{{ pageTitle }}</span>
+  </div>
+
+  <span class="spacer"></span>
+
+  <div class="user-section">
+    <mat-icon>account_circle</mat-icon>
+    <span class="user-email">{{ authService.user()?.email }}</span>
+
+    <button mat-icon-button (click)="logout()" matTooltip="Logout" class="logout-btn">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>

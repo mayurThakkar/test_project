@@ -1,0 +1,15 @@
+    @if (loadingService.isLoading()) {
+      <div class="global-loading-overlay">
+        <div class="loading-content">
+          <mat-spinner diameter="50" strokeWidth="4"></mat-spinner>
+          <div class="loading-text">
+            <h4>{{ loadingService.primaryLoadingMessage() }}</h4>
+            @if (loadingService.loadingCount() > 1) {
+              <p class="multiple-loading">
+                {{ loadingService.loadingCount() }} operations running
+              </p>
+            }
+          </div>
+        </div>
+      </div>
+    }

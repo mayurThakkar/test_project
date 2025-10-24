@@ -1,0 +1,94 @@
+<div class="items-wrapper">
+  <app-app-toolbar
+    [pageTitle]="'Items List'"
+    [pageIcon]="'list'"
+    [showBackButton]="true"
+    [showNavLinks]="true"
+  >
+  </app-app-toolbar>
+
+  <div class="items-content">
+    <div class="header-section">
+      <div class="stats-section">
+        <mat-chip-set>
+          @if (itemsStore.hasItems()) {
+          <mat-chip>
+            <mat-icon matChipAvatar>inventory</mat-icon>
+            {{ itemsStore.totalItems() }} Items
+          </mat-chip>
+          } @if (itemsStore.lastUpdated()) {
+          <mat-chip>
+            <mat-icon matChipAvatar>schedule</mat-icon>
+            Updated {{ itemsStore.lastUpdated() | date : 'short' }}
+          </mat-chip>
+          }
+        </mat-chip-set>
+      </div>
+
+      <div class="actions-section">
+        <button
+          mat-icon-button
+          (click)="refreshItems()"
+          [disabled]="itemsStore.loading()"
+          matTooltip="Refresh Items"
+          class="refresh-btn"
+        >
+          <mat-icon [class.spinning]="itemsStore.loading()">refresh</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    @if (itemsStore.hasError() && !itemsStore.loading()) {
+    <div class="state-container error-state">
+      <mat-icon color="warn" class="state-icon">error_outline</mat-icon>
+      <h3>Unable to Load Items</h3>
+      <p class="error-message">{{ itemsStore.error() }}</p>
+      <div class="error-actions">
+        <button mat-raised-button color="primary" (click)="retryLoad()">
+          <mat-icon>refresh</mat-icon>
+          Try Again
+        </button>
+        <button mat-button (click)="itemsStore.clearError()">
+          <mat-icon>close</mat-icon>
+          Dismiss
+        </button>
+      </div>
+    </div>
+    }
+
+    <!-- Empty State -->
+    @if (itemsStore.isEmpty() && itemsStore.isReady()) {
+    <div class="state-container empty-state">
+      <mat-icon class="state-icon">inbox</mat-icon>
+      <h3>No Items Available</h3>
+      <p>There are currently no items in the system.</p>
+      <button mat-raised-button color="primary" (click)="refreshItems()">
+        <mat-icon>refresh</mat-icon>
+        Refresh List
+      </button>
+    </div>
+    } @if (itemsStore.hasItems() && itemsStore.isReady()) {
+    <div class="items-grid">
+      @for (item of itemsStore.items(); track item.id) {
+      <mat-card class="item-card">
+        <mat-card-header>
+          <div mat-card-avatar class="item-avatar">
+            <mat-icon>inventory_2</mat-icon>
+          </div>
+          <mat-card-title>{{ item.name }}</mat-card-title>
+          <mat-card-subtitle>
+            <mat-icon>tag</mat-icon>
+            ID: {{ item.id }}
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <p class="item-description">{{ item.description }}</p>
+        </mat-card-content>
+      </mat-card>
+      }
+    </div>
+    }
+  </div>
+</div>
