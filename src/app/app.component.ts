@@ -6,7 +6,7 @@ import { GlobalLoadingComponent } from './shared/components/loading/global-loadi
   selector: 'app-root',
   imports: [RouterOutlet, GlobalLoadingComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
-export class App {
+export class AppComponent {
 }
