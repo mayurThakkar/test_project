@@ -37,6 +37,10 @@ export class ItemsListComponent implements OnInit {
     this.itemsStore.retry();
   }
 
+  addMockItem(): void {
+    this.itemsStore.addMockItem();
+  }
+
   toggleViewMode(mode: ViewMode): void {
     this.viewMode.set(mode);
   }

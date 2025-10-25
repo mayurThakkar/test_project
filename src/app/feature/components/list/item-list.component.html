@@ -26,6 +26,16 @@
       </div>
 
       <div class="actions-section">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="addMockItem()"
+          matTooltip="Add Mock Item"
+          class="add-btn"
+        >
+          <mat-icon>add</mat-icon>
+          Add Item
+        </button>
         <div class="view-toggle">
           <mat-button-toggle-group
             [value]="viewMode()"

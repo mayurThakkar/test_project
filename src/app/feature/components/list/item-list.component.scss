@@ -41,6 +41,12 @@
     align-items: center;
     gap: 12px;
 
+    .add-btn {
+      mat-icon {
+        margin-right: 8px;
+      }
+    }
+
     .view-toggle {
       .view-toggle-group {
         border-radius: 8px;
