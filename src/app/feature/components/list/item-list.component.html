@@ -26,6 +26,29 @@
       </div>
 
       <div class="actions-section">
+        <div class="view-toggle">
+          <mat-button-toggle-group
+            [value]="viewMode()"
+            aria-label="View Mode"
+            class="view-toggle-group"
+          >
+            <mat-button-toggle
+              value="card"
+              (click)="toggleViewMode(ViewMode.Card)"
+              matTooltip="Card View"
+            >
+              <mat-icon>view_module</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle
+              value="grid"
+              (click)="toggleViewMode(ViewMode.Grid)"
+              matTooltip="Grid View"
+            >
+              <mat-icon>table_rows</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+
         <button
           mat-icon-button
           (click)="refreshItems()"
@@ -68,8 +91,13 @@
         Refresh List
       </button>
     </div>
-    } @if (itemsStore.hasItems() && itemsStore.isReady()) {
-    <div class="items-grid">
+    }
+
+    <!-- Items Display -->
+    @if (itemsStore.hasItems() && itemsStore.isReady()) {
+    <!-- Card View -->
+    @if (isCardView()) {
+    <div class="items-grid card-view">
       @for (item of itemsStore.items(); track item.id) {
       <mat-card class="item-card">
         <mat-card-header>
@@ -77,10 +105,7 @@
             <mat-icon>inventory_2</mat-icon>
           </div>
           <mat-card-title>{{ item.name }}</mat-card-title>
-          <mat-card-subtitle>
-            <mat-icon>tag</mat-icon>
-            ID: {{ item.id }}
-          </mat-card-subtitle>
+          <mat-card-subtitle> ID: {{ item.id }} </mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content>
@@ -90,5 +115,36 @@
       }
     </div>
     }
+
+    <!-- Grid View -->
+    @if (isGridView()) {
+    <div class="items-table grid-view">
+      <table mat-table [dataSource]="itemsStore.items()" class="mat-elevation-2">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef class="id-column">ID</th>
+          <td mat-cell *matCellDef="let item" class="id-column">{{ item.id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let item" class="name-cell">
+            <div class="name-content">
+              <span class="item-name">{{ item.name }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let item" class="description-cell">
+            <span class="item-description">{{ item.description }}</span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" class="item-row"></tr>
+      </table>
+    </div>
+    } }
   </div>
 </div>

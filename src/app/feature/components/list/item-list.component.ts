@@ -1,8 +1,13 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ItemsStore } from '../../../core/services/stores/items.store';
 import { AppToolbarComponent } from '../../../shared/components/app-toolbar/app-toolbar.component';
 import { SharedModule } from '../../../shared/shared.module';
+
+export enum ViewMode {
+  Card = 'card',
+  Grid = 'grid',
+}
 
 @Component({
   selector: 'app-items-list',
@@ -13,6 +18,10 @@ import { SharedModule } from '../../../shared/shared.module';
 })
 export class ItemsListComponent implements OnInit {
   protected readonly itemsStore = inject(ItemsStore);
+  protected readonly viewMode = signal<ViewMode>(ViewMode.Card);
+
+  protected readonly displayedColumns: string[] = ['id', 'name', 'description'];
+  readonly ViewMode = ViewMode;
 
   ngOnInit(): void {
     if (!this.itemsStore.hasItems() && !this.itemsStore.loading()) {
@@ -26,5 +35,17 @@ export class ItemsListComponent implements OnInit {
 
   retryLoad(): void {
     this.itemsStore.retry();
+  }
+
+  toggleViewMode(mode: ViewMode): void {
+    this.viewMode.set(mode);
+  }
+
+  isCardView(): boolean {
+    return this.viewMode() === ViewMode.Card;
+  }
+
+  isGridView(): boolean {
+    return this.viewMode() === ViewMode.Grid;
   }
 }
